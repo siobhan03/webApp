@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+
+{% block title %} Tenants {% endblock %}
+
+
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-3">
+
+                <h2>Manage <b>Tenants </b>  <button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Add New Tenants</button> </h2>
+
+
+                {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissable" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+
+                        <span aria-hidden="true">x</span>
+
+                    </button>
+
+
+                {{message}}
+
+
+                </div>
+
+
+                {% endfor %}
+
+                {% endif %}
+                {% endwith %}
+
+
+                <table class="table table-hover table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>firstName</th>
+                        <th>surname</th>
+                        <th>contactNo</th>
+                        <th>email</th>
+                        <th>emergencyContactNo</th>
+                        <th>houseID</th>
+                        <th>Action</th>
+
+                    </tr>
+
+
+                   {% for row in tblTenants %}
+                    <tr>
+                        <td>{{row.ID}}</td>
+                        <td>{{row.firstName}}</td>
+                        <td>{{row.surname}}</td>
+                        <td>{{row.contactNo}}</td>
+                        <td>{{row.email}}</td>
+                        <td>{{row.emergencyContactNo}}</td>
+                        <td>{{row.houseID}}</td>
+
+
+                        <td>
+                            <a href="/update3/{{row.ID}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.ID}}">Edit</a>
+                            <a href="/delete3/{{row.ID}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure You Want To Delete ?')">Delete</a>
+
+
+                        </td>
+
+                    </tr>
+
+
+                  <!-- Modal Edit Tenant-->
+<div id="modaledit{{row.ID}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+
+
+      <div class="modal-content">
+
+
+         <div class="modal-header">
+
+
+            <h4 class="modal-title">Update Information</h4>
+
+
+         </div>
+
+
+         <div class="modal-body">
+
+
+            <form action="{{url_for('update3')}}" method="POST">
+
+
+               <div class="form-group">
+
+
+                  <label>First Name:</label>
+                   <input type="hidden"  name="ID" value="{{row.ID}}">
+
+                  <input type="text" class="form-control" name="firstName" value="{{row.firstName}}">
+
+
+               </div>
+
+
+
+               <div class="form-group">
+
+
+                  <label>Surname:</label>
+
+                  <input type="text" class="form-control" name="surname" value="{{row.surname}}">
+
+
+               </div>
+
+
+               <div class="form-group">
+
+
+                  <label>Contact Number:</label>
+                  
+                     <input type="text" class="form-control" name="contactNo" value="{{row.contactNo}}">
+                  
+                  
+               </div>
+
+
+
+
+               <div class="form-group">
+                  
+                  
+                  <label>Email:</label>
+                  
+                     <input type="email" class="form-control" name="email" value="{{row.email}}">
+                  
+                  
+               </div>
+
+               <div class="form-group">
+                  
+                  
+                  <label>Emergency Contact Number:</label>
+                  
+                     <input type="text" class="form-control" name="emergencyContactNo" value="{{row.emergencyContactNo}}">
+                  
+                  
+               </div> 
+
+               <div class="form-group">
+                  
+                  
+                  <label>House ID:</label>
+                  
+                     <input type="text" class="form-control" name="houseID" value="{{row.houseID}}">
+                  
+                  
+               </div>                  
+                                   
+                  
+                  <div class="form-group">
+                  
+                  
+                     <button class="btn btn-primary" type="submit">Update</button>
+                  
+                  
+                  </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+
+                    {% endfor %}
+
+
+                </table>
+
+
+            </div>
+
+
+
+                  <!-- Modal Add Tenant-->
+
+
+<div id="mymodal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+
+            <h4 class="modal-title">Add Tenant</h4>
+         </div>
+         <div class="modal-body">
+
+            <form action="{{url_for('insert3')}}" method="POST">
+
+
+               <div class="form-group">
+
+                  <label>First Name:</label>
+                  <input type="text" class="form-control" name="firstName" required="1">
+
+
+               </div>
+
+
+                <div class="form-group">
+
+
+                  <label>Surname:</label>
+                  <input type="text" class="form-control" name="surname" required="1">
+
+
+               </div>
+
+
+                <div class="form-group">
+
+
+                  <label>Contact Number:</label>
+                  <input type="text" class="form-control" name="contactNo" required="1">
+
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <label>Email:</label>
+                  <input type="email" class="form-control" name="email" required="1">
+
+
+               </div>
+
+               <div class="form-group">
+
+
+                <label>Emergency Contact Number:</label>
+                <input type="text" class="form-control" name="emergencyContactNo" required="1">
+
+
+             </div>
+
+             <div class="form-group">
+
+
+              <label>House ID:</label>
+              <input type="number" class="form-control" name="houseID" required="1">
+
+
+           </div>
+
+
+
+               <div class="form-group">
+
+
+                  <button class="btn btn-primary" type="submit">Add Tenant</button>
+
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+
+</div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
