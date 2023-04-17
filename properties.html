@@ -1,0 +1,376 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+
+{% block title %} Properties {% endblock %}
+
+
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-3">
+
+                <h2>Manage <b>Properties </b>  <button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Add New Properties</button> </h2>
+
+
+                {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissable" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+
+                        <span aria-hidden="true">x</span>
+
+                    </button>
+
+
+                {{message}}
+
+
+                </div>
+
+
+                {% endfor %}
+
+                {% endif %}
+                {% endwith %}
+
+
+                <table class="table table-hover table-dark">
+
+                    <tr>
+
+                        <th>houseID</th>
+                        <th>houseNo</th>
+                        <th>streetName</th>
+                        <th>postcode</th>
+                        <th>pricePerMonth</th>
+                        <th>currentlyRented</th>
+                        <th>noOfBedrooms</th>
+			               <th>builtIn</th>
+			               <th>landlordID</th>
+                        <th>Action</th>
+
+                    </tr>
+
+
+                   {% for row in tblProperties %}
+                    <tr>
+                        <td>{{row.houseID}}</td>
+                        <td>{{row.houseNo}}</td>
+                        <td>{{row.streetName}}</td>
+                        <td>{{row.postcode}}</td>
+                        <td>{{row.pricePerMonth}}</td>
+                        <td>{{row.currentlyRented}}</td>
+                        <td>{{row.noOfBedrooms}}</td>
+			               <td>{{row.builtIn}}</td>
+			               <td>{{landlordID}}</td>
+
+
+                        <td>
+                            <a href="/update2/{{row.houseID}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.houseID}}">Edit</a>
+                            <a href="/delete2/{{row.houseID}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure You Want To Delete ?')">Delete</a>
+
+
+                        </td>
+
+                    </tr>
+
+
+                  <!-- Modal Edit Property-->
+<div id="modaledit{{row.houseID}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+
+
+      <div class="modal-content">
+
+
+         <div class="modal-header">
+
+
+            <h4 class="modal-title">Update Information</h4>
+
+
+         </div>
+
+
+         <div class="modal-body">
+
+
+            <form action="{{url_for('update2')}}" method="POST">
+
+
+               <div class="form-group">
+
+
+                  <label>House Number:</label>
+                   <input type="hidden"  name="houseID" value="{{row.houseID}}">
+
+                  <input type="number" class="form-control" name="houseNo" value="{{row.houseNo}}">
+
+
+               </div>
+
+
+
+               <div class="form-group">
+
+
+                  <label>Street Name:</label>
+
+                  <input type="text" class="form-control" name="streetName" value="{{row.streetName}}">
+
+
+               </div>
+
+
+               <div class="form-group">
+
+
+                  <label>Postcode:</label>
+                  
+                     <input type="text" class="form-control" name="postcode" value="{{row.postcode}}">
+                  
+                  
+               </div>
+
+
+
+
+               <div class="form-group">
+                  
+                  
+                  <label>Price Per Month:</label>
+                  
+                     <input type="number" class="form-control" name="pricePerMonth" value="{{row.pricePerMonth}}">
+                  
+                  
+               </div>
+
+               <div class="form-group">
+                  
+                  
+                  <label>Currently Rented?:</label>
+                  
+                     <input type="text" class="form-control" name="currentlyRented" value="{{row.currentlyRented}}">
+                  
+                  
+               </div> 
+
+               <div class="form-group">
+                  
+                  
+                  <label>Number of Bedrooms:</label>
+                  
+                     <input type="number" class="form-control" name="noOfBedrooms" value="{{row.noOfBedrooms}}">
+                  
+                  
+               </div>   
+
+               <div class="form-group">
+                  
+                  
+                  <label>Year Built In:</label>
+                  
+                     <input type="number" class="form-control" name="builtIn" value="{{row.builtIn}}">
+                  
+                  
+               </div>  
+
+               <div class="form-group">
+                  
+                  
+                  <label>Landlord ID:</label>
+                  
+                     <input type="number" class="form-control" name="landlordID" value="{{row.landlordID}}">
+                  
+                  
+               </div>                 
+                                   
+                  
+                  <div class="form-group">
+                  
+                  
+                     <button class="btn btn-primary" type="submit">Update</button>
+                  
+                  
+                  </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+
+                    {% endfor %}
+
+
+                </table>
+
+
+            </div>
+
+
+
+                  <!-- Modal Add Property-->
+
+
+<div id="mymodal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+
+            <h4 class="modal-title">Add Propety </h4>
+         </div>
+         <div class="modal-body">
+
+            <form action="{{url_for('insert2')}}" method="POST">
+
+
+               <div class="form-group">
+
+                  <label>House Number:</label>
+                  <input type="number" class="form-control" name="houseNo" required="1">
+
+
+               </div>
+
+
+                <div class="form-group">
+
+
+                  <label>Street Name:</label>
+                  <input type="text" class="form-control" name="streetName" required="1">
+
+
+               </div>
+
+
+                <div class="form-group">
+
+
+                  <label>Postcode:</label>
+                  <input type="text" class="form-control" name="postcode" required="1">
+
+
+               </div>
+
+               <div class="form-group">
+
+
+                  <label>Price Per Month:</label>
+                  <input type="number" class="form-control" name="pricePerMonth" required="1">
+
+
+               </div>
+
+               <div class="form-group">
+
+
+                <label>Currently Rented?:</label>
+                <input type="text" class="form-control" name="currentlyRented" required="1">
+
+
+             </div>
+
+             <div class="form-group">
+
+
+              <label>Number of Bedrooms:</label>
+              <input type="number" class="form-control" name="noOfBedrooms" required="1">
+
+
+           </div>
+
+             <div class="form-group">
+
+
+              <label>Year Built In:</label>
+              <input type="number" class="form-control" name="builtIn" required="1">
+
+
+           </div>
+
+             <div class="form-group">
+
+
+              <label>Landlord ID:</label>
+              <input type="number" class="form-control" name="landlordID" required="1">
+
+
+           </div>
+
+
+
+               <div class="form-group">
+
+
+                  <button class="btn btn-primary" type="submit">Add Property</button>
+
+
+               </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+
+</div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
